@@ -254,6 +254,10 @@ SELECT *
 FROM winnipeg
 LIMIT 10;
 
+
+
+-- Create a new table, winnipeg_climate_rating, with columns for temperature and precipitation categorizations:
+CREATE TABLE winnipeg_climate_rating AS
 SELECT 
 local_date,
 year_month,
@@ -267,8 +271,19 @@ CASE
 	WHEN winnipeg_temp >= 35 AND winnipeg_temp < 40 THEN 'Very Hot'
 	WHEN winnipeg_temp >= 40  THEN 'Extremely Hot'
 END AS temp_category,
-winnipeg_precip
+winnipeg_precip,
+CASE
+	WHEN winnipeg_precip < 2.5 THEN 'Light Precipitation'
+	WHEN winnipeg_precip >=2.5 AND winnipeg_precip < 7.5 THEN 'Moderate Precipitation'
+	WHEN winnipeg_precip >= 7.5 AND winnipeg_precip < 50 THEN 'Heavy Precipitation'
+	WHEN winnipeg_precip >= 50 AND winnipeg_precip < 100 THEN 'Very Heavy Precipitation'
+END AS precip_category
 FROM winnipeg;
+
+COMMIT; -- Save changes
+
+
+
 	
 	
 
