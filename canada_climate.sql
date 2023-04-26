@@ -1,10 +1,10 @@
 
 /*
-The raw csv file used in this project was sourced from https://www.kaggle.com/datasets/aturner374/eighty-years-of-canadian-climate-data.
+The raw csv file(Canadian_climate_history.csv) used in this project was sourced from https://www.kaggle.com/datasets/aturner374/eighty-years-of-canadian-climate-data.
 It consists of daily temperatures and precipitation from 13 Canadian centres. This project focuses only on the data queried from 2 weather
-stations in Winnipwg: WINNIPEG RICHARDSON INT'L Airport, and WINNIPEG THE FORKS
+stations in Winnipeg: WINNIPEG RICHARDSON INT'L Airport, and WINNIPEG THE FORKS
 */
--- After viewing the downloaded csv file in a text editor, We start by creating the required table in PostgreSQL:
+-- After viewing the downloaded csv file in a text editor, We start by creating the required table in PostgreSQL database:
 CREATE TABLE public.canada_climate
 (
     local_date character varying, -- the date field is imported as a string to reduce errors during import
@@ -23,7 +23,8 @@ TABLESPACE pg_default;
 ALTER TABLE public.canada_climate
     OWNER to postgres;
 
--- import the data from csv file into the table:
+-- Using psql, import the data from csv file into the table:
+C:\>psql -U postgres -d postgres -h localhost -p 5432 -- Connect to psql
  COPY canada_climate FROM 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/Canadian_climate_history_cleaned.csv' 
  DELIMITER ',' CSV HEADER;
  
@@ -118,10 +119,10 @@ COPY
 	ORDER BY records_missing DESC
 )
 TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/winn_records_deleted_L1.csv' 
-WITH DELIMITER ',' CSV HEADER;
+WITH DELIMITER ',' CSV HEADER; -- winn_records_deleted_L1.csv file uploaded to project repository
 
 
--- Delete all records in the winnipeg table contain missing values for both temperature and precipitation:
+-- Delete all records in the winnipeg table containing missing values for both temperature and precipitation:
 DELETE FROM winnipeg
 WHERE winnipeg_temp is null AND winnipeg_precip is null;
 -- 117 missing records deleted
@@ -273,7 +274,8 @@ CASE
 END AS temp_category,
 winnipeg_precip,
 CASE
-	WHEN winnipeg_precip < 2.5 THEN 'Light Precipitation'
+	WHEN winnipeg_precip = 0 THEN 'No Precipitation'
+	WHEN winnipeg_precip > 0 AND winnipeg_precip < 2.5 THEN 'Light Precipitation'
 	WHEN winnipeg_precip >=2.5 AND winnipeg_precip < 7.5 THEN 'Moderate Precipitation'
 	WHEN winnipeg_precip >= 7.5 AND winnipeg_precip < 50 THEN 'Heavy Precipitation'
 	WHEN winnipeg_precip >= 50 AND winnipeg_precip < 100 THEN 'Very Heavy Precipitation'
@@ -281,6 +283,14 @@ END AS precip_category
 FROM winnipeg;
 
 COMMIT; -- Save changes
+
+SELECT * FROM winnipeg_climate_rating;
+
+Export the newly created and cleaned winnipeg_climate_rating table to the project folder and upload to GitHub:
+COPY (SELECT * FROM winnipeg_climate_rating) TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/winnipeg_climate_rating.csv' 
+WITH DELIMITER ',' CSV HEADER; -- winnipeg_climate_rating.csv file uploaded to GitHub
+
+
 
 
 
