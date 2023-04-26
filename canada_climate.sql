@@ -119,7 +119,7 @@ COPY
 	ORDER BY records_missing DESC
 )
 TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/winn_records_deleted_L1.csv' 
-WITH DELIMITER ',' CSV HEADER; -- winn_records_deleted_L1.csv file uploaded to project repository
+WITH DELIMITER ',' CSV HEADER; -- winn_records_deleted_L1.csv file uploaded to GitHub project repository
 
 
 -- Delete all records in the winnipeg table containing missing values for both temperature and precipitation:
