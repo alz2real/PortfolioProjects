@@ -284,9 +284,10 @@ FROM winnipeg;
 
 COMMIT; -- Save changes
 
-SELECT * FROM winnipeg_climate_rating;
+SELECT * FROM winnipeg_climate_rating
+LIMIT 5; -- View first 5 records
 
-Export the newly created and cleaned winnipeg_climate_rating table to the project folder and upload to GitHub:
+--Export the newly created and cleaned winnipeg_climate_rating table to the project folder and upload to GitHub:
 COPY (SELECT * FROM winnipeg_climate_rating) TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/winnipeg_climate_rating.csv' 
 WITH DELIMITER ',' CSV HEADER; -- winnipeg_climate_rating.csv file uploaded to GitHub
 
