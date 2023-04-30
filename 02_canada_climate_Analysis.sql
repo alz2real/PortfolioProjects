@@ -81,7 +81,7 @@ COPY
 	ROUND(SUM(winnipeg_precip::numeric), 2) AS total_precipitation
 	FROM winnipeg_climate_rating
 	GROUP BY 1, 2 -- Group by month
-	ORDER BY 1 -- Order by number of records for each group
+	ORDER BY 1 -- Order by month
 )
 TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/total_monthly_precip_80yrs.csv' 
 WITH DELIMITER ',' CSV HEADER; -- total_monthly_precip_80yrs.csv uploaded to GitHub
