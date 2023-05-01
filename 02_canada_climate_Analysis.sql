@@ -23,8 +23,8 @@ COPY
 	HAVING COUNT(local_date) >= 300 -- Filters out group results with with less than 300 days of observation 
 	ORDER BY date_year
 )
-TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/average_temp_80yrs.csv' 
-WITH DELIMITER ',' CSV HEADER; -- average_temp_80yrs.csv uploaded to GitHub
+TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/annual_temp_80yrs.csv' 
+WITH DELIMITER ',' CSV HEADER; -- annual_temp_80yrs.csv uploaded to GitHub		
 
 /*
 We can identify periods of extreme weather: By analyzing the temperature data, we 
@@ -44,17 +44,12 @@ COPY
 	GROUP BY 1, 2 -- Group by month
 	ORDER BY 3 DESC -- Order by number of records for each group
 )
-TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/extreme_temp_80yrs.csv' 
-WITH DELIMITER ',' CSV HEADER; -- average_temp_80yrs.csv uploaded to GitHub
+TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/extreme_temp_periods.csv' 
+WITH DELIMITER ',' CSV HEADER; -- extreme_temp_periods.csv uploaded to GitHub
 /*
 The result of the above query shows that the coldest periods in Winnipeg occur between December and February, with
 January typically being the coldest period. June to August are the hottest months in Winnipeg.
 */
-
-SELECT *
-FROM winnipeg_climate_rating
-LIMIT 5;
-
 
 -- The query below summarizes the total annual precipitation from 1940 to 2019:
 COPY
@@ -71,7 +66,11 @@ TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/total_annual_precip_80yr
 WITH DELIMITER ',' CSV HEADER; -- total_annual_precip_80yrs.csv uploaded to GitHub
 
 
--- The query below summarizes the total monthly precipitation from 1940 to 2019. 
+/*
+The query below summarizes the total monthly precipitation from 1940 to 2019: By calculating the total 
+precipitation for each month, we can identify the rainiest and driest months in Winnipeg. This information 
+can be used to make decisions around irrigation and water management.
+*/
 COPY
 (
 	SELECT 
@@ -86,6 +85,8 @@ COPY
 TO 'D:/E-Resource/Data_and_AI/Datasets/Canadian_Weather/total_monthly_precip_80yrs.csv' 
 WITH DELIMITER ',' CSV HEADER; -- total_monthly_precip_80yrs.csv uploaded to GitHub
 
-
-
-
+/*
+The results of the query above shows that the rainiest months 
+typically are between May and August, with peak rains occuring
+in June. The driest months are December, January, and February.
+*/
