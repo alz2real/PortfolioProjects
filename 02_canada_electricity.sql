@@ -136,13 +136,13 @@ COMMIT; -- Save changes
 COPY
 (
 	SELECT 
-	period,
-	activity,
-	source,
-	destination,
-	ROUND(energy::numeric, 2) AS energy,
-	ROUND(total_value::numeric, 2) AS total_value,
-	ROUND(price::numeric, 2) AS price
+		period,
+		activity,
+		source,
+		destination,
+		ROUND(energy::numeric, 2) AS energy,
+		ROUND(total_value::numeric, 2) AS total_value,
+		ROUND(price::numeric, 2) AS price
 	FROM energy_exp_imp
 	ORDER BY period
 )
@@ -154,12 +154,12 @@ WITH DELIMITER ',' CSV HEADER; -- energy_exp_imp_cleaned.csv uploaded to GitHub
 -- Create a new table from energy_exp_imp with records of all energy exports from Manitoba:
 CREATE TABLE manitoba_energy_exp AS
 SELECT 
-period,
-activity,
-source,
-SUM(ROUND(energy::numeric, 2)) AS total_energy,
-SUM(ROUND(total_value::numeric, 2)) sum_total_value,
-SUM(ROUND(price::numeric, 2)) AS total_price
+	period,
+	activity,
+	source,
+	SUM(ROUND(energy::numeric, 2)) AS total_energy,
+	SUM(ROUND(total_value::numeric, 2)) sum_total_value,
+	SUM(ROUND(price::numeric, 2)) AS total_price
 FROM energy_exp_imp
 WHERE source = 'Manitoba'
 GROUP BY period, activity, source
@@ -172,12 +172,12 @@ WITH DELIMITER ',' CSV HEADER;
 -- Create a new table from energy_exp_imp with records of all energy imports from Manitoba:
 CREATE TABLE manitoba_energy_imp AS
 SELECT 
-period,
-activity,
-destination,
-SUM(ROUND(energy::numeric, 2)) AS total_energy,
-SUM(ROUND(total_value::numeric, 2)) sum_total_value,
-SUM(ROUND(price::numeric, 2)) AS total_price
+	period,
+	activity,
+	destination,
+	SUM(ROUND(energy::numeric, 2)) AS total_energy,
+	SUM(ROUND(total_value::numeric, 2)) sum_total_value,
+	SUM(ROUND(price::numeric, 2)) AS total_price
 FROM energy_exp_imp
 WHERE destination = 'Manitoba'
 GROUP BY period, activity, destination
