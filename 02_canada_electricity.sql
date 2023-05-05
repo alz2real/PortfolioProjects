@@ -186,3 +186,9 @@ ORDER BY period;
 -- Export manitoba_energy_imp to manitoba_energy_imp.csv and upload to GitiHub:
 COPY (SELECT * FROM manitoba_energy_imp) TO 'D:/E-Resource/Data_and_AI/Datasets/Canada-Electricity_Imp_Exp/manitoba_energy_imp.csv' 
 WITH DELIMITER ',' CSV HEADER;
+
+/*
+Note that the above two tables exported have all the days for each month summarized/grouped under day 01. For example, the records for
+January, ranging from 1990-01-01 to 1990-01-31, are all summarized under 1990-01-01. Likewise, 1990-02-01 to 1990-02-28 are 
+all summarized under 1990-02-01 for the month of February.
+*/
