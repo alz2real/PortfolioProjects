@@ -75,3 +75,54 @@ COPY
 )
 TO 'D:/E-Resource/Data_and_AI/NHL_Game_Data/analysis/canadian_teams_summary.csv' WITH CSV HEADER;
 -- 5389 Copied
+
+-- Query below pulls out goalie stats for Canadian teams from 2011 to 2020
+COPY	
+(
+	SELECT 
+		ggs.player_id AS goalie_id,
+		CONCAT(pi.firstname, ' ', pi.lastname) AS goalie_name,
+		CONCAT(ti.shortname, ' ', ti.teamname) AS team,
+		g.match_date,
+		ggs.timeonice,
+		ggs.saves,
+		ggs.powerplaysaves
+	FROM game_goalie_stats ggs
+	JOIN team_info ti
+	ON ggs.team_id = ti.team_id
+	JOIN player_info pi
+	ON ggs.player_id = pi.player_id
+	JOIN game g
+	ON ggs.game_id = g.game_id
+	WHERE ti.shortname IN ('Winnipeg', 'Vancouver', 'Ottawa', 'Montreal', 'Toronto', 'Calgary', 'Edmonton')
+	AND g.match_date BETWEEN '2011-01-01' AND '2020-12-01'
+	ORDER BY saves DESC
+)
+TO 'D:/E-Resource/Data_and_AI/NHL_Game_Data/analysis/goalie_performance.csv' WITH CSV HEADER;	
+-- 6977 Copied
+
+-- Query below pulls out skater stats for Canadian teams from 2011 to 2020
+COPY	
+(
+	SELECT 
+		gss.player_id AS skater_id,
+		CONCAT(pi.firstname, ' ', pi.lastname) AS skater_name,
+		CONCAT(ti.shortname, ' ', ti.teamname) AS team,
+		g.match_date,
+		gss.assists,
+		gss.goals,
+		gss.shots
+	FROM game_skater_stats gss
+	JOIN team_info ti
+	ON gss.team_id = ti.team_id
+	JOIN player_info pi
+	ON gss.player_id = pi.player_id
+	JOIN game g
+	ON gss.game_id = g.game_id
+	WHERE ti.shortname IN ('Winnipeg', 'Vancouver', 'Ottawa', 'Montreal', 'Toronto', 'Calgary', 'Edmonton')
+	AND g.match_date BETWEEN '2011-01-01' AND '2020-12-01'
+	ORDER BY goals DESC
+)
+TO 'D:/E-Resource/Data_and_AI/NHL_Game_Data/analysis/skater_performance.csv' WITH CSV HEADER;	
+-- 117260 Copied
+
